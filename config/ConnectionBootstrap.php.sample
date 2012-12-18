@@ -1,0 +1,57 @@
+<?php
+/**
+ * ConnectionBootstrap
+ *
+ * Configuration Class for DataPump
+ *
+ * @package   NexyUtilities
+ * @author    "Ricardo Coelho" <ricardo@nexy.com.br>
+ * @copyright 2012 © Nexy Serviços de Informática Ltda.
+ * @category  Data
+ * @license   GPLv2 http://www.gnu.org/licenses/gpl-2.0.html
+ * @link      http://cdn.nexy.com.br/packages/data/connection-bootstrap.php.sample.txt
+ * 
+ */
+
+/**
+ * Configuration Class for DataPump
+ */
+class ConnectionBootstrap
+{
+    /**
+     * Must return a PDO connection for origin database
+     * 
+     * @return PDO Origin database PDO connection
+     */
+    static public function getOriginConnection()
+    {
+        return new PDO(
+            // Configure your origin PDO DSN
+            // Check http://php.net/manual/en/pdo.construct.php for examples
+        );
+    }
+    /**
+     * Must return a PDO connection for destination database
+     * 
+     * @return PDO Destination database PDO connection
+     */
+    static public function getDestinationConnection()
+    {
+        return new PDO(
+            // Configure your destination PDO DSN
+            // Check http://php.net/manual/en/pdo.construct.php for examples
+        );
+    }
+    /**
+     * Get the ruleset markdown file
+     * 
+     * @return Array Ruleset
+     */
+    static public function getRuleset()
+    {
+        return file(
+            // Change this for your actual ruleset file
+            'ruleset/sample_ruleset.md'
+        );
+    }
+}
