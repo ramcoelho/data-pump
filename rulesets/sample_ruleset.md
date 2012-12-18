@@ -96,14 +96,9 @@ variables:
 	YOU SHOULD AVOID THIS as it WILL SLOW DOWN
 	YOUR DATA TRANSFER.
 
-	Address the `$destination` array to translate the data
+	Address the `$data` array to translate the data
 	BEFORE the insert.
 	
-	If you need to run an statement before the import, (which
-	is strongly NOT RECOMMENDED), you can use both
-	the `$origin_conn` and `$destination_conn` to perform
-	your queries.
-
 	YOU SHOULD AVOID CHANGING DATA ON THE ORIGIN DATABASE.
 
 	The migration proccess is not aborted if an error occurs during a
