@@ -22,9 +22,10 @@ How do I use it?
 * Define you migration ruleset in the beautiful markdown commented config file `ruleset/sample_ruleset.md`;
 * Save your custom ruleset with any name you like and reference it in `config/ConnectionBootstrap.php` (`getRuleset`);
 
-    cd data-pump
-
-    php runDataPump.php
+```
+cd data-pump
+php runDataPump.php
+```
 
 Change whatever I did wrong and help to improve the project.
 
