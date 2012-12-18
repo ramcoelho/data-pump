@@ -3,8 +3,8 @@ Data Pump
 
 A generic PHP data pump script.
 
-Why should I use it?
---------------------
+When should I use it?
+---------------------
 
 In any of the following cases:
 
@@ -23,6 +23,7 @@ How do I use it?
 * Save your custom ruleset with any name you like and reference it in `config/ConnectionBootstrap.php` (`getRuleset`);
 
     cd data-pump
+
     php runDataPump.php
 
 Change whatever I did wrong and help to improve the project.
