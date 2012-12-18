@@ -108,6 +108,7 @@ class DataPump
         }
 
         foreach (self::$table_parameters as $table => $parameters) {
+            echo "Performing migration on table " . $table . "\n";
             if (isset($parameters['t-set'])) {
                 try {
                     $destination->exec($parameters['t-set']);
@@ -124,9 +125,39 @@ class DataPump
                     continue;
                 }                
             }
-            if (isset($parameters['rst'])) {
+            if (isset($parameters['imp'])) {
                 try {
-                    $destination->exec($parameters['rst']);
+                    $result_set = $origin->query($parameters['imp']);
+                    // The actual import
+
+                    $prepared_stmt = '';
+
+                    while ($data = $result_set->fetch(PDO::FETCH_ASSOC)) {
+                        if (isset($parameters['t-trans'])) {
+                            try {
+                                eval($parameters['t-trans']);
+                            } catch (Exception $e) {
+                                self::$errors[] = $e->getMessage();
+                                continue;
+                            }
+                        }
+                        $values = array_values($data);
+                        if (empty($prepared_stmt)) {
+                            $keys = array_keys($data);
+                            $val_max_idx = sizeof($values) - 1;
+                            $insert = 'INSERT INTO ' . $table . ' (' . 
+                                implode(', ', $keys) . ') VALUES (' .
+                                '?' . str_repeat(', ?', $val_max_idx) .
+                                ')';
+                            $prepared_stmt = $destination->prepare($insert);
+                        }
+                        try {
+                            $prepared_stmt->execute($values);
+                        } catch (Exception $e) {
+                            self::$errors[] = $e->getMessage();
+                            continue;
+                        }
+                    }
                 } catch (Exception $e) {
                     self::$errors[] = $e->getMessage();
                     continue;
