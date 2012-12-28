@@ -66,6 +66,11 @@ class DataPump
         self::$parameters = array();
 
         foreach ($ruleset as $line) {
+            if (preg_match('/^(\t|    )(.*)$/', $line, $matches)) {
+                $indented_lines[] = trim($matches[2]);
+                // Disarm special chars on PHP code
+                $line = str_replace('{', '', str_replace('[', '', $line));
+            }
             if (preg_match('/\{([^\}]+)\}/', $line, $matches)) {
                 self::registerParameter($table, $variable, $indented_lines);
                 $table = $matches[1];
@@ -76,9 +81,6 @@ class DataPump
                 self::registerParameter($table, $variable, $indented_lines);
                 $variable = $matches[1];
                 $indented_lines = array();
-            }
-            if (preg_match('/^(\t|    )(.*)$/', $line, $matches)) {
-                $indented_lines[] = trim($matches[2]);
             }
         }
         self::registerParameter($table, $variable, $indented_lines);
@@ -131,7 +133,6 @@ class DataPump
                     // The actual import
 
                     $prepared_stmt = '';
-
                     while ($data = $result_set->fetch(PDO::FETCH_ASSOC)) {
                         if (isset($parameters['t-trans'])) {
                             try {
@@ -154,6 +155,7 @@ class DataPump
                         try {
                             $prepared_stmt->execute($values);
                         } catch (Exception $e) {
+                            echo $e->getMessage();
                             self::$errors[] = $e->getMessage();
                             continue;
                         }
